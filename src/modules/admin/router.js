@@ -5,17 +5,12 @@ export const baseUrl = '/admin'
 export default [
   {
     method: 'GET',
-    route: '/loans/pending',
-    action: admin.getPendingLoans
+    route: '/esp/data',
+    action: admin.getAllData
   },
   {
-    method: 'POST',
-    route: '/loans/:loanId/approve',
-    action: admin.approveLoan
-  },
-  {
-    method: 'POST',
-    route: '/loans/:loanId/reject',
-    action: admin.rejectLoan
+    method: 'GET',
+    route: '/esp/last',
+    action: admin.getLastData
   }
 ]

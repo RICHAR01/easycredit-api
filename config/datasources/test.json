@@ -2,6 +2,6 @@
   {
     "name": "mongodb",
     "store": "mongodb",
-    "url": "mongodb://c0ncr3dit0:c0ncr3dit0@ds111244.mlab.com:11244/concredito"
+    "url": "mongodb://richar01:mongodb01@ds261626.mlab.com:61626/lancha"
   }
 ]

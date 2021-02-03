@@ -1,59 +1,21 @@
 import User from '../../models/user'
 import AccessToken from '../../models/accessToken'
-import Loan from '../../models/loan'
+import Esp8266 from '../../models/esp8266'
+import { log } from 'util';
 
-export async function getPendingLoans (ctx) {
-  // find pending loans
-  const query = {
-    status: 'pending'
-  }
-  const pendingLoans = await Loan.find(query)
-
-  // find users of loans
-  const userIds = []
-  pendingLoans.forEach(loan => {
-    userIds.push(loan.userId)
-  })
-  const users = await User.find({ _id: { $in: userIds } })
-
-  // set users of loans
-  pendingLoans.forEach(loan => {
-    const loanUser = users.find(user => user.id === loan.userId)
-    loan._doc.user = loanUser;
-  })
+export async function getAllData (ctx) {
+  // find allData
+  const allData = await Esp8266.find().sort({$natural:-1})
+  console.log(allData);
 
   //return pending loans
-  ctx.body = pendingLoans
+  ctx.body = allData
 }
 
-export async function approveLoan (ctx) {
-  // find and update loan
-  const loanId = ctx.params.loanId
-  const query = {
-    _id: loanId
-  }
-  const update = {
-    status: 'approved'
-  }
-  const approvedLoan = await Loan.findOneAndUpdate(query, update)
+export async function getLastData (ctx) {
+  // find last data
+  const approvedLoan = await Esp8266.find().sort({$natural:-1}).limit(1);
 
-  //return approved loan
+  //return last data
   ctx.body = approvedLoan
-}
-
-export async function rejectLoan (ctx) {
-  // find and update loan
-  const loanId = ctx.params.loanId
-  const rejectReason = ctx.request.body.rejectReason
-  const query = {
-    _id: loanId
-  }
-  const update = {
-    status: 'rejected',
-    rejectReason: rejectReason
-  }
-  const rejectedLoan = await Loan.findOneAndUpdate(query, update)
-
-  //return rejected loan
-  ctx.body = rejectedLoan
 }
